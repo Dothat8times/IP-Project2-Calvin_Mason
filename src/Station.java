@@ -1,3 +1,9 @@
+/**
+ * @Author Calvin Bittinger CLIP 77939
+ * @Author Mason (*to be filled in*)
+ * @Overview: The Station class manages a static capacity of Bikes.
+ * Each Station has its own unique name and Bikes within the station remain sorted.
+ */
 public class Station {
 
     private String name;
