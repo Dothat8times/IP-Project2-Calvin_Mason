@@ -65,16 +65,20 @@ public class Station {
     /**
      * Checks all currently docked Bikes to see if any match the ID provided
      * @param bikeId: String of the Bikes ID
-     * @return: True if the bike exists in the dock, false otherwise
+     * @return True if the bike exists in the dock, false otherwise
      * @pre none
      */
     public boolean hasBike(String bikeId){
         boolean found = false;
         int index = 0;
+        if(dockSize == 0){
+            return false;
+        }
         do{
             if(dock[index].getId().equals(bikeId)){
                 found = true;
             }
+            index++;
         }while(!found && index < dockSize);
         return found;
     }
@@ -90,7 +94,7 @@ public class Station {
 
     /**
      * Adds a new Bike to the Station
-     * @param bikeId
+     * @param bikeId: String name of the Bike to be added
      * @pre isFull() == false
      */
     public void addBike(String bikeId){

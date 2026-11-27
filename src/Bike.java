@@ -44,6 +44,6 @@ public class Bike {
     }
 
     public boolean isInUse() {
-        return inUse;
+        return false;
     }
 }

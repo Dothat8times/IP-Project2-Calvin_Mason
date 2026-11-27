@@ -69,6 +69,9 @@ public class TransportSystem {
     public boolean hasBikeInSystem(String bikeId){
         boolean found = false;
         int index = 0;
+        if(stationsSize == 0){
+            return false;
+        }
         do{
             if(stations[index].hasBike(bikeId)){
                 found = true;
@@ -95,6 +98,9 @@ public class TransportSystem {
     public boolean hasStation(String stationName){
         boolean found = false;
         int index = 0;
+        if(stationsSize == 0){
+            return false;
+        }
         do{
             if(stations[index].getName().equals(stationName)){
                 found = true;

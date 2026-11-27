@@ -52,22 +52,23 @@ public class Main {
      * Station that is full.
      * If all conditions are met, the Bike is added to the desired Station.
      * @param in: Open and non-null Scanner
+     * @param tSystem: Non-null TransportSystem
      * @pre Scanner is open and initialized.
      */
-    private static void runAddCommand(Scanner in){
+    private static void runAddCommand(Scanner in, TransportSystem tSystem){
         String bikeName = in.next();
         String stationName = in.next();
-        if(TransportSystem.hasBikeInSystem(bikeName)){
+        if(tSystem.hasBikeInSystem(bikeName)){
             System.out.printf(BIKE_ALREADY_EXISTS, bikeName);
         }
-        else if(!TransportSystem.hasStation(stationName)){
+        else if(!tSystem.hasStation(stationName)){
             System.out.printf(STATION_NOT_FOUND, stationName);
         }
-        else if(TransportSystem.stationIsFull(stationName)){
+        else if(tSystem.stationIsFull(stationName)){
             System.out.printf(NO_DOCK_AVAILABLE,stationName);
         }
         else{//precondition for addBike is met
-            TransportSystem.addBike(bikeName,stationName);
+            tSystem.addBike(bikeName,stationName);
             System.out.printf(ADD_REPLY,stationName,bikeName);
         }
     }
@@ -77,19 +78,20 @@ public class Main {
      * already exists, or if they try to add a station with an invalid capacity.
      * If all conditions are met, the new Station is added to the TransportSystem.
      * @param in: Open and non-null Scanner
+     * @param tSystem: Non-null TransportSystem
      * @pre Scanner is open and initialized
      */
-    private static void runInstallCommand(Scanner in){
+    private static void runInstallCommand(Scanner in, TransportSystem tSystem){
         String stationName = in.next();
         int stationCapacity = in.nextInt();
-        if(TransportSystem.hasStation()){
+        if(tSystem.hasStation(stationName)){
             System.out.printf(STATION_ALREADY_EXISTS,stationName);
         }
         else if(stationCapacity < 1){
             System.out.printf(INVALID_CAPACITY,stationName,stationCapacity);
         }
         else{ //precondition for addStation is met
-            TransportSystem.addStation(stationName,stationCapacity);
+            tSystem.addStation(stationName,stationCapacity);
             System.out.printf(INSTALL_REPLY,stationName,stationCapacity);
         }
     }
@@ -102,7 +104,7 @@ public class Main {
         String command = in.next();
         do{
             switch (command) {
-                case (REGISTER_CMD):
+                case (REGISTER_CMD) -> {
                     String username = in.next();
                     int balance = in.nextInt();
                     if (transportSystem.userAlreadyExists(username)) {
@@ -111,12 +113,9 @@ public class Main {
                         transportSystem.addUser(username, balance);
                         System.out.printf(REGISTER_REPLY, username, centsToEuros(balance));
                     }
-                    break;
-                default:
-                    runInvalidCommand();
-            switch (command){
-                case(INSTALL_CMD) -> runInstallCommand(in);
-                case(ADD_CMD) -> runAddCommand(in);
+                    }
+                case(INSTALL_CMD) -> runInstallCommand(in, transportSystem);
+                case(ADD_CMD) -> runAddCommand(in, transportSystem);
                 default -> { runInvalidCommand();}
             }
             in.nextLine();
