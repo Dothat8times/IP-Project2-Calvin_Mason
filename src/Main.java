@@ -41,6 +41,24 @@ public class Main {
     private static final String TOP_REPLY = "%s, %d, $d minutes.%n";
 
     /**
+     *
+     * @param in
+     */
+    private static void runInstallCommand(Scanner in){
+        String stationName = in.next();
+        int stationCapacity = in.nextInt();
+        if(TransportSystem.hasStation()){
+            System.out.printf(STATION_ALREADY_EXISTS,stationName);
+        }
+        else if(stationCapacity < 1){
+            System.out.printf(INVALID_CAPACITY,stationName,stationCapacity);
+        }
+        else{ //precondition for addStation is met
+            TransportSystem.addStation(stationName,stationCapacity);
+            System.out.printf(INSTALL_REPLY,stationName,stationCapacity);
+        }
+    }
+    /**
      * Runs the command interpreter for the program. Will continue to accept commands
      * until the user calls the 'exit' command. (Commands are case-sensitive)
      * @param in open and non-null scanner.
@@ -61,6 +79,9 @@ public class Main {
                     break;
                 default:
                     runInvalidCommand();
+            switch (command){
+                case(INSTALL_CMD) -> runInstallCommand(in);
+                default -> { runInvalidCommand();}
             }
             in.nextLine();
             command = in.next();
