@@ -1,6 +1,11 @@
 /**
  * @Author Calvin Bittinger CLIP 77939
  * @Author Mason (*TO BE FILLED IN*)
+ * @Overview: In the Main class is the command interpreter for the program.
+ * The command interpreter applies multiple operations on a TransportSystem object.
+ * Current Functionalities include :
+ * 'exit' : to exit the program.
+ * 'install' : to install a new Station.
  */
 
 import java.util.Scanner;
@@ -19,17 +24,17 @@ public class Main {
     private static final String STATION_ALREADY_EXISTS = "Station %s already exists.%n";
     private static final String INVALID_CAPACITY = "Station %s cannot be created with %d docking stations.%n";
     private static final String INSTALL_REPLY = "Station %s is available with %d docking stations.%n";
-    private static final String BIKE_ALREADY_EXISTS = "Bike %d already exists.%n";
+    private static final String BIKE_ALREADY_EXISTS = "Bike %s already exists.%n";
     private static final String STATION_NOT_FOUND = "Station %s not found.%n";
     private static final String NO_DOCK_AVAILABLE = "Station %s does not have available docks.%n";
-    private static final String ADD_REPLY = "Station %s now has a bike %d in one of its docking stations.%n";
+    private static final String ADD_REPLY = "Station %s now has a bike %s in one of its docking stations.%n";
     private static final String USER_ALREADY_REGISTERED = "User %s already registered.%n";
     private static final String REGISTER_REPLY = "User %s successfully registered with balance %f euros.%n";
     private static final String USER_NOT_REGISTERED = "User %s not registered.%n";
     private static final String USER_ALREADY_RIDING = "User %s already riding.%n";
     private static final String INSUFFICIENT_BALANCE = "Insufficient balance.%n";
     private static final String NO_BIKE_AVAILABLE = "No bike available.%n";
-    private static final String PICKUP_REPLY = "Bike %d unlocked.%n";
+    private static final String PICKUP_REPLY = "Bike %s unlocked.%n";
     private static final String USER_NOT_RIDING = "User %s is not riding.%n";
     private static final String STATION_FULL = "Station %s is full.%n";
     private static final String RETURN_REPLY = "Cost: %f euros.%n";
@@ -41,8 +46,38 @@ public class Main {
     private static final String TOP_REPLY = "%s, %d, $d minutes.%n";
 
     /**
-     *
-     * @param in
+     * Reads in the desired bikeName and attempts to add it to the desired stationName.
+     * Prints out appropriate error messages if the user attempts to add a Bike that
+     * already exists, add a Bike to a Station that does not exist, or add a Bike to a
+     * Station that is full.
+     * If all conditions are met, the Bike is added to the desired Station.
+     * @param in: Open and non-null Scanner
+     * @pre Scanner is open and initialized.
+     */
+    private static void runAddCommand(Scanner in){
+        String bikeName = in.next();
+        String stationName = in.next();
+        if(TransportSystem.hasBikeInSystem(bikeName)){
+            System.out.printf(BIKE_ALREADY_EXISTS, bikeName);
+        }
+        else if(!TransportSystem.hasStation(stationName)){
+            System.out.printf(STATION_NOT_FOUND, stationName);
+        }
+        else if(TransportSystem.stationIsFull(stationName)){
+            System.out.printf(NO_DOCK_AVAILABLE,stationName);
+        }
+        else{//precondition for addBike is met
+            TransportSystem.addBike(bikeName,stationName);
+            System.out.printf(ADD_REPLY,stationName,bikeName);
+        }
+    }
+    /**
+     * Reads in the desired stationName and capacity for a new Station from the user.
+     * Prints out appropriate error messages if the user attempts to add a Station that
+     * already exists, or if they try to add a station with an invalid capacity.
+     * If all conditions are met, the new Station is added to the TransportSystem.
+     * @param in: Open and non-null Scanner
+     * @pre Scanner is open and initialized
      */
     private static void runInstallCommand(Scanner in){
         String stationName = in.next();
@@ -68,6 +103,7 @@ public class Main {
         do{
             switch (command){
                 case(INSTALL_CMD) -> runInstallCommand(in);
+                case(ADD_CMD) -> runAddCommand(in);
                 default -> { runInvalidCommand();}
             }
             in.nextLine();

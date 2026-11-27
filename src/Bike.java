@@ -1,12 +1,18 @@
+/**
+ * @Author Calvin Bittinger CLIP 77939
+ * @Author Mason (*to be filled in*)
+ * @Overview: The Bike class manages all relevant data for Bikes
+ * Each Bike has its own unique id and a battery level from 0 -> 100.
+ */
 public class Bike {
     private String id;
     private int battery;
-    private boolean inUse;
+    private int timeOfPickup;
 
     public Bike(String id) {
         this.id = id;
         battery = 100;
-        inUse = false;
+        timeOfPickup = 0;
     }
 
     /**
