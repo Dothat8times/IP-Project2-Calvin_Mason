@@ -49,18 +49,8 @@ public class Main {
         String command = in.next();
         do{
             switch (command) {
-                case (REGISTER_CMD):
-                    String username = in.next();
-                    int balance = in.nextInt();
-                    if (transportSystem.userAlreadyExists(username)) {
-                        System.out.printf(USER_ALREADY_REGISTERED, username);
-                    } else {
-                        transportSystem.addUser(username, balance);
-                        System.out.printf(REGISTER_REPLY, username, centsToEuros(balance));
-                    }
-                    break;
-                default:
-                    runInvalidCommand();
+                case (REGISTER_CMD) -> runRegisterCommand(in, transportSystem);
+                default -> runInvalidCommand();
             }
             in.nextLine();
             command = in.next();
@@ -75,6 +65,17 @@ public class Main {
      */
     private static void runInvalidCommand(){
         System.out.printf(INVALID_CMD_REPLY);
+    }
+
+    private static void runRegisterCommand(Scanner in, TransportSystem transportSystem) {
+        String username = in.next();
+        int balance = in.nextInt();
+        if (transportSystem.userAlreadyExists(username)) {
+            System.out.printf(USER_ALREADY_REGISTERED, username);
+        } else {
+            transportSystem.addUser(username, balance);
+            System.out.printf(REGISTER_REPLY, username, centsToEuros(balance));
+        }
     }
 
     private static double centsToEuros(int cents) {
