@@ -105,6 +105,8 @@ public class Main {
         do{
             switch (command) {
                 case (REGISTER_CMD) -> runRegisterCommand(in, transportSystem);
+                case (INSTALL_CMD) -> runInstallCommand(in, transportSystem);
+                case (ADD_CMD) -> runAddCommand(in,transportSystem);
                 default -> runInvalidCommand();
             }
             in.nextLine();
