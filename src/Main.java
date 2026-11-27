@@ -24,7 +24,7 @@ public class Main {
     private static final String NO_DOCK_AVAILABLE = "Station %s does not have available docks.%n";
     private static final String ADD_REPLY = "Station %s now has a bike %d in one of its docking stations.%n";
     private static final String USER_ALREADY_REGISTERED = "User %s already registered.%n";
-    private static final String REGISTER_REPLY = "User %s successfully registered with balance %f euros.%n";
+    private static final String REGISTER_REPLY = "User %s successfully registered with balance %2f euros.%n";
     private static final String USER_NOT_REGISTERED = "User %s not registered.%n";
     private static final String USER_ALREADY_RIDING = "User %s already riding.%n";
     private static final String INSUFFICIENT_BALANCE = "Insufficient balance.%n";
@@ -45,11 +45,22 @@ public class Main {
      * until the user calls the 'exit' command. (Commands are case-sensitive)
      * @param in open and non-null scanner.
      */
-    private static void runCommandInterpreter(Scanner in){
+    private static void runCommandInterpreter(Scanner in, TransportSystem transportSystem){
         String command = in.next();
         do{
-            switch (command){
-                default -> { runInvalidCommand();}
+            switch (command) {
+                case (REGISTER_CMD):
+                    String username = in.next();
+                    int balance = in.nextInt();
+                    if (transportSystem.userAlreadyExists(username)) {
+                        System.out.printf(USER_ALREADY_REGISTERED, username);
+                    } else {
+                        transportSystem.addUser(username, balance);
+                        System.out.printf(REGISTER_REPLY, username, centsToEuros(balance));
+                    }
+                    break;
+                default:
+                    runInvalidCommand();
             }
             in.nextLine();
             command = in.next();
@@ -66,9 +77,15 @@ public class Main {
         System.out.printf(INVALID_CMD_REPLY);
     }
 
+    private static double centsToEuros(int cents) {
+        return cents / 100.00;
+
+    }
+
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
-        runCommandInterpreter(input);
+        TransportSystem GIRA = new TransportSystem();
+        runCommandInterpreter(input, GIRA);
         input.close();
     }
 }

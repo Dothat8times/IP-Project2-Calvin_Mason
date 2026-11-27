@@ -1,6 +1,6 @@
 /**
  * @Author Calvin Bittinger CLIP 77939
- * @Author Mason (*to be filled in*)
+ * @Author Mason Brown CLIP 76851
  * @Overview: TransportSystem manages Users, Stations and Bikes within Stations.
  *
  */
@@ -28,5 +28,32 @@ public class TransportSystem {
         users = new User[DEFAULT_CAPACITY];
         usersSize = 0;
         globalTime = 0;
+    }
+
+    public void addUser(String name, int balance) {
+        if (usersSize < DEFAULT_CAPACITY) {
+            users[usersSize] = new User(name, balance);
+            usersSize++;
+        }
+        else {
+            User[] newList = new User[users.length+1];
+            for (int i=0;i<users.length;i++) {
+                newList[i] = users[i];
+            }
+            newList[users.length] = new User(name, balance);
+            users = newList;
+        }
+    }
+    public boolean userAlreadyExists(String username) {
+        if (usersSize == 0) {
+            return false;
+        }
+        boolean found = false;
+        int i = 0;
+        do {
+            found = users[i].getName().equals(username);
+            i++;
+        } while (!found && i<usersSize);
+        return found;
     }
 }
